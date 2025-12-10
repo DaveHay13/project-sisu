@@ -1,0 +1,209 @@
+PROJECT SISU – AUTOMATION ASSIGNMENT FRAMEWORK
+==============================================
+
+This document contains the complete framework we discussed for completing the Sisu Automation Engineer assignment.  
+It includes:  
+- Test scenarios  
+- Flowcharts  
+- BDD specifications  
+- Project structure  
+- CI/CD setup  
+- Required installations  
+- Development approach  
+- Notes on delivery
+
+-------------------------------------------------------
+1. ASSIGNMENT GOALS
+-------------------------------------------------------
+Automate 4 unauthenticated public flows on https://www.epicbet.com using:
+- Playwright (TypeScript)
+- Page Object Model (POM)
+- Clean project structure
+- CI/CD (GitHub Actions)
+- Clear documentation and reasoning
+
+The focus is on thinking, structure, and clarity — not complex code.
+
+-------------------------------------------------------
+2. SELECTED TEST SCENARIOS (4 FLOWS)
+-------------------------------------------------------
+
+1. Homepage loads with key elements  
+2. Sports page loads and shows events/odds  
+3. Casino page loads and shows game tiles  
+4. Promotions page loads and displays offers  
+
+-------------------------------------------------------
+3. FLOWCHARTS FOR EACH SCENARIO
+-------------------------------------------------------
+
+Scenario 1 – Homepage
+Start  
+→ Open browser  
+→ Navigate to https://www.epicbet.com  
+→ Check logo  
+→ Check navigation menu  
+→ Check hero banner  
+→ End  
+
+Scenario 2 – Sports Page
+Start  
+→ Navigate to homepage  
+→ Click “Sports”  
+→ Wait for page load  
+→ Check sports categories  
+→ Check event odds  
+→ End  
+
+Scenario 3 – Casino Page
+Start  
+→ Navigate to homepage  
+→ Click “Casino”  
+→ Wait for page load  
+→ Check category filters  
+→ Check game tiles  
+→ End  
+
+Scenario 4 – Promotions Page
+Start  
+→ Navigate to homepage  
+→ Click “Promotions”  
+→ Check that promotions load  
+→ End  
+
+-------------------------------------------------------
+4. BDD (GHERKIN)
+-------------------------------------------------------
+
+Feature: Epicbet public navigation
+
+  Scenario: Homepage loads
+    Given I open the Epicbet homepage
+    Then I should see the logo
+    And I should see the navigation menu
+    And I should see a hero banner
+
+  Scenario: Sports page loads
+    Given I open the Epicbet homepage
+    When I click the "Sports" navigation item
+    Then I should see the Sports page
+    And sports categories or filters
+    And at least one event with odds
+
+  Scenario: Casino page loads
+    Given I open the Epicbet homepage
+    When I click the "Casino" navigation item
+    Then I should see the Casino page
+    And casino category filters
+    And at least one game tile
+
+  Scenario: Promotions page loads
+    Given I open the Epicbet homepage
+    When I click the "Promotions" navigation item
+    Then I should see the Promotions page
+    And at least one promotion visible
+
+-------------------------------------------------------
+5. PROJECT STRUCTURE
+-------------------------------------------------------
+
+epicbet-playwright/
+  package.json
+  playwright.config.ts
+  README.md
+
+  /tests
+    home.spec.ts
+    sports.spec.ts
+    casino.spec.ts
+    promotions.spec.ts
+
+  /pages
+    HomePage.ts
+    SportsPage.ts
+    CasinoPage.ts
+    PromotionsPage.ts
+
+  /features
+    epicbet_public_navigation.feature
+
+  /steps
+    epicbet.steps.ts
+
+  /.github/workflows
+    ci.yml
+
+-------------------------------------------------------
+6. REQUIRED INSTALLATIONS
+-------------------------------------------------------
+
+1. Install Node.js  
+2. Install VS Code  
+3. Install Git  
+4. Inside project folder, run:
+   npm init -y
+   npm install -D @playwright/test
+   npx playwright install
+
+(Optional) Cucumber/BDD libraries:
+   npm install -D @cucumber/cucumber
+
+-------------------------------------------------------
+7. CI/CD (GITHUB ACTIONS)
+-------------------------------------------------------
+
+name: CI
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npx playwright install --with-deps
+      - run: npx playwright test
+
+-------------------------------------------------------
+8. DEVELOPMENT STEPS (ONE-DAY PLAN)
+-------------------------------------------------------
+
+1. Setup project + install dependencies  
+2. Create folder structure  
+3. Build Page Objects  
+4. Write 4 Playwright tests  
+5. Stabilize locators  
+6. Add CI file  
+7. Write README + attach this documentation  
+8. Final run + push to GitHub  
+
+Total realistic time: **6–8 hours**.
+
+-------------------------------------------------------
+9. ISSUES & FIXES (TO FILL DURING DEVELOPMENT)
+-------------------------------------------------------
+Examples to document during coding:
+
+- Dynamic locators → fixed with stable CSS selectors  
+- Slow loading → added `await expect().toBeVisible()`  
+- Missing elements → adjusted waits  
+- Navigation flakiness → used `page.waitForLoadState()`  
+
+-------------------------------------------------------
+10. DELIVERY NOTES
+-------------------------------------------------------
+Your submission should include:
+- GitHub repo link  
+- Working CI  
+- Clean code  
+- README with setup steps  
+- This documentation file  
+- Clear test naming and structure  
+
+This matches what companies expect from a mid-level automation engineer.
+
+-------------------------------------------------------
+END OF DOCUMENT
+-------------------------------------------------------
